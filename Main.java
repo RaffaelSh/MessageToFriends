@@ -28,9 +28,9 @@ public class Main {
 		
 		this.jda = builder.build().awaitReady();
 		JDAClient client = jda.asClient();
+		String s = JOptionPane.showInputDialog("What do you want to send to your friends?");
 		for (Friend friend : client.getFriends()) {
 			friend.getUser().openPrivateChannel().queue((channel) -> {
-				String s = JOptionPane.showInputDialog("What do you want to send to your friends?");
 				channel.sendMessage(s).queue();
 				System.out.println("Successfully send messages!");
 			});

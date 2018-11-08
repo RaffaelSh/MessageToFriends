@@ -31,7 +31,7 @@ public class Main {
 		
 		String s = JOptionPane.showInputDialog("What do you want to send to your friends?");
 		
-		client.getFriends().stream().map(Friend::getUser).map(User::openPrivateChannel).map(RestAction::complete).forEach(channel -> channel.sendMessage(s).complete());
+		client.getFriends().stream().map(Friend::getUser).map(User::openPrivateChannel).forEach(restAction -> restAction.queue(channel -> channel.sendMessage(s).complete()));
 		
 		System.exit(0);
 	}

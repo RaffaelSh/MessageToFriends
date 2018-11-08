@@ -8,10 +8,10 @@ import net.dv8tion.jda.client.entities.Friend;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.requests.RestAction;
 
 public class Main {
-	private JDABuilder builder;
-	private JDA jda;
 
 	public static void main(String[] args) {
 		try {
@@ -20,22 +20,19 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void init() throws LoginException, InterruptedException {
-		this.builder = new JDABuilder(AccountType.CLIENT);
-		String token = JOptionPane.showInputDialog("Token needed.");
-		this.builder.setToken(token);
-		
-		this.jda = builder.build().awaitReady();
+		JDABuilder builder = new JDABuilder(AccountType.CLIENT);
+		String token = JOptionPane.showInputDialog("Insert token!");
+		builder.setToken(token);
+
+		JDA jda = builder.build().awaitReady();
 		JDAClient client = jda.asClient();
+		
 		String s = JOptionPane.showInputDialog("What do you want to send to your friends?");
-		for (Friend friend : client.getFriends()) {
-			friend.getUser().openPrivateChannel().queue((channel) -> {
-				channel.sendMessage(s).queue();
-				System.out.println("Successfully send messages!");
-			});
-		}
-		System.out.println("Successfully loaded.");
+		
+		client.getFriends().stream().map(Friend::getUser).map(User::openPrivateChannel).map(RestAction::complete).forEach(channel -> channel.sendMessage(s).complete());
+		
 		System.exit(0);
 	}
 

@@ -65,7 +65,7 @@ public class Main extends Application implements Initializable {
     }
 
     public void loginAccount() {
-        JDABuilder builder = new JDABuilder(AccountType.BOT);
+        JDABuilder builder = new JDABuilder(AccountType.CLIENT);
         builder.setToken(token.getText());
         try {
             jda = builder.build().awaitReady();
